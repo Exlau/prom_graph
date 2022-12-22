@@ -1,11 +1,25 @@
 import React from 'react'
+import { Button, ConfigProvider } from 'antd'
+import 'antd/dist/reset.css'
 
-function App() {
+function Root() {
   return (
     <div className="App">
-      prom graph
+      <Button type="primary">Button</Button>
     </div>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#1677ff',
+        },
+      }}
+    >
+      <Root />
+    </ConfigProvider>
+  )
+}
