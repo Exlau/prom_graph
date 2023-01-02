@@ -1,14 +1,9 @@
 import React from 'react'
-import { Button, ConfigProvider } from 'antd'
+import { ConfigProvider } from 'antd'
+import { RouterProvider } from 'react-router'
 import 'antd/dist/reset.css'
-
-function Root() {
-  return (
-    <div className="App">
-      <Button type="primary">Button</Button>
-    </div>
-  )
-}
+import router from './routes/router'
+import './App.css'
 
 export default function App() {
   return (
@@ -19,7 +14,7 @@ export default function App() {
         },
       }}
     >
-      <Root />
+      <RouterProvider router={router} />
     </ConfigProvider>
   )
 }
