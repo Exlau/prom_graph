@@ -42,5 +42,6 @@ module.exports = {
     semi: ['error', 'never'],
     'react/jsx-uses-react': 2,
     'import/extensions': 'off',
+    'react/jsx-props-no-spreading': 0,
   },
 }
