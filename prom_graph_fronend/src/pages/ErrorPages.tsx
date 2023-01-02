@@ -31,10 +31,8 @@ function ErrorPage() {
           type="link"
         >
           Back
-
         </Button>
       </div>
-
     </div>
   )
 }
