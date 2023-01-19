@@ -38,3 +38,5 @@ function ErrorPage() {
 }
 
 export default ErrorPage
+
+// layout is an array of objects, see the demo for more complete usage
