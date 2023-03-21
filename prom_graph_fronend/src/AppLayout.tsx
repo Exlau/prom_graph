@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import type { MenuProps } from 'antd'
 import {
   Breadcrumb, Layout, Menu, theme,
@@ -6,6 +6,7 @@ import {
 import { Outlet, useLocation } from 'react-router'
 import menuItems from './routes/menu'
 import loadingAnimation from './components/LoadingAnimation'
+import testQuery from './api/test'
 
 const { Header, Content, Sider } = Layout
 
@@ -26,6 +27,12 @@ function AppLayout() {
   const location = useLocation()
 
   const pathSnippets = location.pathname.split('/').filter((i) => i)
+
+  useEffect(() => {
+    testQuery().then((res) => {
+      console.log('res: ', res)
+    })
+  }, [])
 
   const breadcrumbItems = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join('/')}`
