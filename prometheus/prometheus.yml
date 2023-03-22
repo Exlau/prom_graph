@@ -1,0 +1,10 @@
+global:
+  scrape_interval:     30s # 默认抓取周期
+  external_labels:
+    monitor: 'sample_monitor'
+scrape_configs:
+  - job_name: 'node-exporter' #服务的名称
+    scrape_interval: 15s
+    metrics_path: /metrics  #获取指标的url
+    static_configs:
+      - targets: ['node-exporter0:9100']
