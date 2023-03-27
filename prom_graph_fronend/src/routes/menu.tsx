@@ -9,16 +9,16 @@ interface MenuType {
 
 const menu:MenuType[] = [
   {
-    path: '/',
+    path: '/home',
     label: 'HOME',
     children: [
       {
-        path: 'home',
-        label: <Link to="dashboard">DashBoard</Link>,
+        path: 'home/dashboard',
+        label: <Link to="home/dashboard">DashBoard</Link>,
       },
       {
-        path: 'chartDesign',
-        label: <Link to="chartDesign">Design</Link>,
+        path: 'home/chartDesign',
+        label: <Link to="home/chartDesign">Design</Link>,
       },
     ],
   },
