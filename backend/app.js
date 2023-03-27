@@ -9,13 +9,14 @@ const logger = require('koa-logger')
 const index = require('./routes/index')
 const users = require('./routes/users')
 const cors = require('koa2-cors')
+const jwt = require('koa-jwt')
 
 // error handler
 onerror(app)
 
 // middlewares
 app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
+  enableTypes: ['json', 'form', 'text']
 }))
 app.use(json())
 app.use(logger())
@@ -35,16 +36,22 @@ app.use(async (ctx, next) => {
 
 // cors
 app.use(cors({
-  origin:'*',
-  maxAge:5,
-  methods:['GET','POST','DELETE','PUT'],
-  allowedHeaders:['Content-Type'],
-  credential:true
+  origin: '*',
+  maxAge: 5,
+  methods: ['GET', 'POST', 'DELETE', 'PUT'],
+  allowedHeaders: ['Content-Type'],
+  credential: true
 }))
 
+// jwt
+app.use(jwt({
+  secret: 'test-sec',
+  debug: true
+}).unless({ path: [/login/, /registry/] }))
+
 // routes
-app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(index.routes(), index.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
