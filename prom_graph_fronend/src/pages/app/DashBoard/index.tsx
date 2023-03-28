@@ -1,45 +1,75 @@
-import React from 'react'
-import GridLayout from 'react-grid-layout'
-import { LineChart } from '../../../components/charts'
+/* eslint-disable no-nested-ternary */
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import {
+  Space, Avatar, List, Input, Button,
+} from 'antd'
+import { FolderAddOutlined } from '@ant-design/icons'
+import { useDashboardList } from './service/dashboard'
 import './index.css'
 
+const position = 'bottom'
+
 function DashBoard() {
-  const layout = [
-    {
-      i: 'd', x: 4, y: 0, w: 4, h: 12,
-    },
-    {
-      i: 'e', x: 4, y: 0, w: 4, h: 12,
-    },
-    {
-      i: 'f', x: 4, y: 0, w: 4, h: 12,
-    },
-  ]
+  const [page, setPage] = useState(1)
+  const { isLoading, error, data } = useDashboardList(page, 6)
+  const navigateFunc = useNavigate()
 
   return (
-    <div style={{
-      width: '100%', height: '100%', position: 'absolute',
-    }}
-    >
-      <GridLayout
-        className="layout"
-        layout={layout}
-        cols={12}
-        rowHeight={30}
-        width={2400}
+    <Space direction="vertical" size="small" style={{ display: 'flex' }}>
+      <Space size="middle">
+        <Input.Search
+          placeholder="Search Dashboard"
+          enterButton="Search"
+          size="large"
+          loading
+        />
+        <Button
+          type="primary"
+          icon={<FolderAddOutlined />}
+          size="middle"
+          onClick={() => {
+            navigateFunc('/home/newdashboard', {
+              replace: true,
+            })
+          }}
+        >
+          New Dashboard
+        </Button>
+      </Space>
+      <List
+        pagination={{
+          onChange: (p) => {
+            setPage(p)
+          },
+          position,
+          pageSize: 6,
+          total: data?.result?.totalDocs ?? 0,
+        }}
       >
-        <div key="d">
-          <LineChart title="temp chart" xData={['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']} seriesData={[5, 20, 36, 10, 10, 20]} />
-        </div>
-        <div key="e">
-          <LineChart title="temp chart" xData={['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']} seriesData={[5, 20, 36, 10, 10, 20]} />
-        </div>
-        <div key="f">
-          <LineChart title="temp chart" xData={['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']} seriesData={[5, 20, 36, 10, 10, 20]} />
-        </div>
-
-      </GridLayout>
-    </div>
+        <Space direction="vertical" size="small" style={{ display: 'flex' }}>
+          {error
+            ? 'error'
+            : isLoading
+              ? 'loading'
+              : data?.result?.docs?.map((item: any) => (
+                <List.Item
+                  className="dashboard-list-item"
+                  style={{ backgroundColor: 'white' }}
+                  onClick={() => {
+                    navigateFunc(item.name)
+                  }}
+                >
+                  <List.Item.Meta
+                    avatar={<Avatar />}
+                    title={<Link to="test">{item?.name}</Link>}
+                    description={item?.description}
+                  />
+                </List.Item>
+              ))}
+        </Space>
+      </List>
+    </Space>
   )
 }
 
