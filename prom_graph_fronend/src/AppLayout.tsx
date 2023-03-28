@@ -98,6 +98,7 @@ function AppLayout() {
               margin: 0,
               minHeight: 280,
               background: colorBgElevated,
+              overflow: 'auto',
             }}
           >
             <Suspense fallback={React.createElement(loadingAnimation)}>
