@@ -15,6 +15,14 @@ const jwt = require('koa-jwt')
 // error handler
 onerror(app)
 
+// cors
+app.use(cors({
+  origin: '*',
+  maxAge: 5,
+  methods: ['GET', 'POST', 'DELETE', 'PUT'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}))
+
 // middlewares
 app.use(bodyparser({
   enableTypes: ['json', 'form', 'text']
@@ -35,14 +43,6 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
-// cors
-app.use(cors({
-  origin: '*',
-  maxAge: 5,
-  methods: ['GET', 'POST', 'DELETE', 'PUT'],
-  allowedHeaders: ['Content-Type'],
-  credential: true
-}))
 
 // jwt
 app.use(jwt({
