@@ -9,6 +9,7 @@ const DashboardDetail = React.lazy(() => (import('../pages/app/DashBoard/Dashboa
 const DashboardNew = React.lazy(() => (import('../pages/app/DashBoard/DashboardNew')))
 const ChartDesign = React.lazy(() => (import('../pages/app/ChartDesign')))
 const LoginPage = React.lazy(() => (import('../pages/Login/Login')))
+const PanelEditor = React.lazy(() => (import('../components/panel/PanelEditor')))
 
 const routes: RouteObject[] = [
   {
@@ -42,6 +43,10 @@ const routes: RouteObject[] = [
           {
             path: 'chartDesign',
             element: <ChartDesign />,
+          },
+          {
+            path: 'panel/:id',
+            element: <PanelEditor />,
           },
         ],
       },

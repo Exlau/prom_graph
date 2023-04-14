@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -7,6 +8,7 @@ import {
 import { FolderAddOutlined } from '@ant-design/icons'
 import { useDashboardList } from './service/dashboard'
 import './index.css'
+import { DashboardProps } from './DashboardTypes'
 
 const position = 'bottom'
 
@@ -44,7 +46,7 @@ function DashBoard() {
           },
           position,
           pageSize: 6,
-          total: data?.result?.totalDocs ?? 0,
+          total: data?.totalDocs ?? 0,
         }}
       >
         <Space direction="vertical" size="small" style={{ display: 'flex' }}>
@@ -52,17 +54,17 @@ function DashBoard() {
             ? 'error'
             : isLoading
               ? 'loading'
-              : data?.result?.docs?.map((item: any) => (
+              : (data?.docs as DashboardProps[])?.map((item: any) => (
                 <List.Item
                   className="dashboard-list-item"
                   style={{ backgroundColor: 'white' }}
                   onClick={() => {
-                    navigateFunc(item.name)
+                    navigateFunc(item._id)
                   }}
                 >
                   <List.Item.Meta
                     avatar={<Avatar />}
-                    title={<Link to="test">{item?.name}</Link>}
+                    title={<Link to="test">{item?.title}</Link>}
                     description={item?.description}
                   />
                 </List.Item>
