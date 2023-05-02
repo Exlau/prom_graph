@@ -62,10 +62,7 @@ function AppLayout() {
 
   const pathSnippets = location.pathname.split('/').filter((i) => i)
 
-  const breadcrumbItems = pathSnippets.map((_, index) => {
-    const url = `/${pathSnippets.slice(0, index + 1).join('/')}`
-    return <Breadcrumb.Item key={url}>{url}</Breadcrumb.Item>
-  })
+  const breadcrumbItems = pathSnippets.join('/')
 
   return (
     <Layout style={{ height: '100%' }}>

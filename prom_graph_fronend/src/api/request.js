@@ -14,7 +14,6 @@ req.interceptors.request.use(
     }
     // eslint-disable-next-line no-param-reassign
     config.headers['Content-Type'] = 'application/json'
-    console.log('in interceptors: ', config)
     return config
   },
 )

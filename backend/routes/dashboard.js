@@ -34,7 +34,6 @@ router.put('/', async (ctx, next) => {
   const { name: owner } = ctx.state.user
 
   const { title, panels, _id } = ctx.request.body
-  console.log('updated: ',panels)
 
   try {
     await Dashboard.updateOne(
@@ -47,7 +46,7 @@ router.put('/', async (ctx, next) => {
   }
 
 
-
+2
 })
 
 router.post('/new', async (ctx, next) => {

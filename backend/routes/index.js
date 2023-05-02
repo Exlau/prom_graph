@@ -32,7 +32,7 @@ router.post('/login', async (ctx, next) => {
   }
 
   const { body } = ctx.request
-  const token = jsonwebtoken.sign({ name: body?.username }, 'test-sec', { expiresIn: '3h' })
+  const token = jsonwebtoken.sign({ name: body?.username }, 'test-sec', { expiresIn: '30d' })
   ctx.response.body = { "token": token };
 })
 
