@@ -5,7 +5,7 @@ import {
 } from 'antd'
 import Cookies from 'js-cookie'
 import axios from 'axios'
-// import { login } from '../../api/users/login'
+import { BASE_URL } from '../../api/config'
 
 import './style.css'
 
@@ -14,16 +14,15 @@ function LoginPage() {
 
   const onFinish = (values: any) => {
     const { username, password } = values
-    axios.post('http://localhost:4000/login', {
+    axios.post(`${BASE_URL}/login`, {
       username,
       password,
     }).then((res) => {
       setToggle('no')
       Cookies.set('token', `${res.data.token}`)
       window.location.replace('/')
-    }).catch((err) => {
+    }).catch(() => {
       setToggle('show')
-      console.log('error: ', err.response.data)
     })
   }
 

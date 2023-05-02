@@ -31,8 +31,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
       MONGO_INITDB_DATABASE: mydatabase
-      MONGO_USERNAME: cnode
-      MONGO_PASSWORD: cnode
+      MONGO_USERNAME: exlau
+      MONGO_PASSWORD: exlau
     restart: always
     ports:
       - "27017:27017"

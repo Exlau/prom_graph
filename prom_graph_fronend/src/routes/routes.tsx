@@ -39,14 +39,15 @@ const routes: RouteObject[] = [
           {
             path: 'dashboard/:id',
             element: <DashboardDetail />,
+
+          },
+          {
+            path: 'dashboard/:dashboardId/panel/:panelId',
+            element: <PanelEditor />,
           },
           {
             path: 'chartDesign',
             element: <ChartDesign />,
-          },
-          {
-            path: 'panel/:id',
-            element: <PanelEditor />,
           },
         ],
       },

@@ -3,7 +3,7 @@ import { Card } from 'antd'
 import { useNavigate } from 'react-router'
 // import echarts from '../charts/basic'
 
-function PanelMini() {
+function PanelMini({ id }: {id: string}) {
   const chartRef: any = useRef()
   const wrapperRef: any = useRef()
   const navigateFunc = useNavigate()
@@ -43,7 +43,7 @@ function PanelMini() {
       style={{ height: '100%', width: '100%' }}
       bodyStyle={{ height: '80%', width: '80%' }}
       onClick={() => {
-        navigateFunc('/home/panel/test_id')
+        navigateFunc(`panel/${id}`)
       }}
       hoverable
     >
