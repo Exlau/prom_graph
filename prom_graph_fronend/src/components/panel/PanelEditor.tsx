@@ -5,7 +5,7 @@ import './PanelEditor.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { LineChart } from '../charts'
 import { DashboardProps } from '../../pages/app/DashBoard/DashboardTypes'
-import { PanelProps } from './panelTypes'
+import { PanelProps } from '../../pages/app/DashBoard/panelTypes'
 import { fetchDashboardById } from '../../store/reducers'
 import QueryForm from './QueryForm'
 
@@ -43,10 +43,15 @@ function PanelEditor() {
   }, [dashboardId])
 
   useEffect(() => {
+    // Set current panel
     setPanel(
       dashboardData?.panels.find((p: PanelProps) => p.id === panelId),
     )
   }, [dashboardData])
+
+  useEffect(() => {
+    console.log(panel)
+  }, [panel])
 
   return (
     <Row gutter={16} className="panel-editor-root">

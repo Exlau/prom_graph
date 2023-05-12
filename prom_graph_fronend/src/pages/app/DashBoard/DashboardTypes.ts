@@ -1,4 +1,4 @@
-import { PanelProps } from '../../../components/panel/panelTypes'
+import { PanelProps } from './panelTypes'
 
 export interface DashboardProps {
   _id: string;

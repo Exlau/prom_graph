@@ -36,9 +36,7 @@ function LoginPage() {
           <h2 className="active"> Sign In </h2>
           <h2 className="inactive underlineHover">Sign Up </h2>
 
-          <div className="fadeIn first">
-            {/* <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" /> */}
-          </div>
+          <div className="fadeIn first" />
           <Form
             name="basic"
             style={{
