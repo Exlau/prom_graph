@@ -55,7 +55,7 @@ function UserDropDown(props:any) {
 
 function AppLayout() {
   const {
-    token: { colorBgContainer, colorBgElevated },
+    token: { colorBgElevated },
   } = theme.useToken()
 
   const location = useLocation()
@@ -73,7 +73,7 @@ function AppLayout() {
       <Layout>
         <Sider
           width={200}
-          style={{ background: colorBgContainer, height: '100%' }}
+          style={{ height: '100%' }}
         >
           <Menu
             mode="inline"
@@ -82,7 +82,9 @@ function AppLayout() {
               height: '100%',
               borderRight: 0,
               fontFamily: 'deyi-black',
+              color: 'white',
               letterSpacing: '2px',
+              backgroundColor: '#001529',
             }}
             items={menus}
           />

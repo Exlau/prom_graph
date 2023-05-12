@@ -16,6 +16,11 @@ const jwt = require('koa-jwt')
 // error handler
 onerror(app)
 
+// error-handling
+app.on('error', (err, ctx) => {
+  console.error('server error', err, ctx)
+});
+
 // cors
 app.use(cors({
   origin: '*',
@@ -23,6 +28,13 @@ app.use(cors({
   methods: ['GET', 'POST', 'DELETE', 'PUT'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }))
+
+// jwt
+app.use(jwt({
+  // TODO:环境变量注入密钥
+  secret: 'test-sec', 
+  debug: true
+}).unless({ path: [/login/, /registry/] })) // 跳过登录和注册接口
 
 // middlewares
 app.use(bodyparser({
@@ -45,22 +57,12 @@ app.use(async (ctx, next) => {
 })
 
 
-// jwt
-app.use(jwt({
-  secret: 'test-sec',
-  debug: true
-}).unless({ path: [/login/, /registry/] }))
+
 
 // routes
 app.use(users.routes(), users.allowedMethods())
 app.use(index.routes(), index.allowedMethods())
 app.use(dashboard.routes(), dashboard.allowedMethods())
 app.use(prometheus.routes(), prometheus.allowedMethods())
-
-// error-handling
-app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx)
-});
-
 
 module.exports = app

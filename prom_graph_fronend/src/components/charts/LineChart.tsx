@@ -1,7 +1,10 @@
 import React, { useRef, useEffect } from 'react'
 import { Card } from 'antd'
+import { ECBasicOption } from 'echarts/types/dist/shared'
+
 import echarts from './basic'
-// import { LineChartProps } from './chartTypes'
+
+// import { LineChartOption } from './chartTypes'
 
 export function LineChart({ title, xData, seriesData }: any) {
   const chartRef: any = useRef()
@@ -9,7 +12,7 @@ export function LineChart({ title, xData, seriesData }: any) {
 
   useEffect(() => {
     const chart = echarts.init(chartRef.current) // echart初始化容器
-    const option = {
+    const option:ECBasicOption = {
       xAxis: {
         type: 'category',
         data: xData,

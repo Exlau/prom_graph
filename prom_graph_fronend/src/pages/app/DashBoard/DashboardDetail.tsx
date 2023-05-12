@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import GridLayout from 'react-grid-layout'
 import { Divider, Button } from 'antd'
-import _ from 'lodash'
+import { cloneDeep } from 'lodash'
 // import { LineChart } from '../../../components/charts'
 import { PanelMini } from '../../../components/panel'
 import './DashboardDetail.css'
@@ -14,7 +14,7 @@ import {
   saveDashboardJson,
   setDashboardJson,
 } from '../../../store/reducers/dashboardReducer'
-import { PanelProps, GridPos } from '../../../components/panel/panelTypes'
+import { PanelProps, GridPos } from './panelTypes'
 import { DashboardProps } from './DashboardTypes'
 
 function DashboardDetail() {
@@ -54,6 +54,10 @@ function DashboardDetail() {
     })
 
     setPanelList(dashboardData?.panels)
+    // setPanelList(
+    //   dashboardData?.panels?.length
+    //     ? [dashboardData?.panels[2]] : dashboardData.panels,
+    // )
     setPanelLayout(layout)
   }, [dashboardData])
 
@@ -64,7 +68,7 @@ function DashboardDetail() {
     }
     const newLayout = [...pos]
 
-    const newDashboardJson = _.cloneDeep(dashboardData)
+    const newDashboardJson = cloneDeep(dashboardData)
 
     pos.forEach(({
       i, x, y, w, h,
@@ -115,7 +119,7 @@ function DashboardDetail() {
       >
         {panelList?.map((p) => (
           <div key={p.id}>
-            <PanelMini id={p.id} />
+            <PanelMini {...p} />
           </div>
         ))}
       </GridLayout>

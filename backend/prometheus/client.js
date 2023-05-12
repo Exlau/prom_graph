@@ -1,6 +1,10 @@
-const client = require('prom-client')
+const {PrometheusDriver} = require('prometheus-query')
 
-const collectDefaultMetrics = client.collectDefaultMetrics
-const Rejistry = clientn.Rejistry
-const register = new Rejistry()
-collectDefaultMetrics({ register }) 
+const queryProm = new PrometheusDriver({
+    endpoint: "http://localhost:9090",
+    baseURL: "/api/v1"
+});
+
+module.exports = {
+  queryProm
+}

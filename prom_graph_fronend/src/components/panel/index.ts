@@ -1,2 +1,2 @@
-export * from './PanelMini'
+export * from '../../pages/app/DashBoard/PanelMini'
 export * from './PanelEditor'

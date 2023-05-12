@@ -1,8 +1,8 @@
 const router = require('koa-router')()
 const jsonwebtoken = require('jsonwebtoken')
-const bcrypt = require('mongoose')
 const { mongoConnection } = require('../mongo/mongo')
 const { User } = require('../mongo/schema/User')
+
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
@@ -13,8 +13,6 @@ router.get('/', async (ctx, next) => {
 router.post('/login', async (ctx, next) => {
   const { username, password } = ctx.request.body
   const user = await User.findOne({ username })
-  console.log('username: ', username)
-  console.log('password: ', password)
   ctx.response.type = 'application/json'
 
   if (!user) {
@@ -32,6 +30,7 @@ router.post('/login', async (ctx, next) => {
   }
 
   const { body } = ctx.request
+  // TODO:密钥使用环境变量注入
   const token = jsonwebtoken.sign({ name: body?.username }, 'test-sec', { expiresIn: '30d' })
   ctx.response.body = { "token": token };
 })

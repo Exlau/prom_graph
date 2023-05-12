@@ -45,8 +45,6 @@ router.put('/', async (ctx, next) => {
     ctx.body = { message: 'failed' }
   }
 
-
-2
 })
 
 router.post('/new', async (ctx, next) => {

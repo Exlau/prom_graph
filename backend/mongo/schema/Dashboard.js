@@ -19,7 +19,10 @@ const {mongoConnection} = require("../mongo");
 // }
 
 const dashboardSchema = new mongoose.Schema({
-  owner: String,
+  owner: {
+    type:Array,
+    required:true
+  },
   title: String,
   panels: {
     type: [Object],
