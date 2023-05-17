@@ -20,6 +20,10 @@ const menu:MenuType[] = [
         path: 'home/chartDesign',
         label: <Link to="home/chartDesign">Design</Link>,
       },
+      {
+        path: 'home/config',
+        label: <Link to="home/config">Config Page</Link>,
+      },
     ],
   },
 ]

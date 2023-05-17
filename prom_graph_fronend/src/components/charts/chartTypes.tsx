@@ -20,16 +20,32 @@ export interface VectorTableData {
 }
 
 export interface ChartPanelData {
-  xData:any[],
-  yData:any[],
+  metric:object;
+  xData:any[];
+  seriesData:any[];
 }
 
 export type PanelData = VectorTableData | ChartPanelData
 
-export interface PrometheusResult {
-  result: PanelData;
-  resultType: ChartType;
+interface PromErrorMessage {
+  status?:string;
+  errorType?:string;
+  error?:string;
 }
+
+export interface PrometheusResult {
+  result?: PanelData | PanelData[];
+  resultType?: ChartType;
+  message?:PromErrorMessage
+}
+
+// export interface PrometheusError {
+//   status:string;
+//   errorType:string;
+//   error:string;
+// }
+
+// export type PrometheusResult = PrometheusData | PrometheusError
 
 export interface LineChartConfig {
 

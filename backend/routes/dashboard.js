@@ -47,14 +47,17 @@ router.put('/', async (ctx, next) => {
 
 })
 
-router.post('/new', async (ctx, next) => {
+// new dashboard
+router.post('/', async (ctx, next) => {
   const { name: owner } = ctx.state.user
-  const { title, id, panels } = ctx.request.body
+  const { title, id, panels, description,tags } = ctx.request.body
   const newDashboard = new Dashboard({
     owner: owner,
     title,
     id,
-    panels
+    panels,
+    tags,
+    description
   })
 
   try {
@@ -66,6 +69,7 @@ router.post('/new', async (ctx, next) => {
 
   ctx.body = { message: 'Created successfully!' }
 })
+
 
 router.post('/save', async (ctx, next) => {
   const { name: owner } = ctx.state.user

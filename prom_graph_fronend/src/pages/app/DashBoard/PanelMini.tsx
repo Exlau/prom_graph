@@ -1,78 +1,72 @@
 import React, {
-  useEffect, useMemo, useRef, useState,
+  useMemo, useRef, useEffect,
 } from 'react'
 import { Card } from 'antd'
 import { useNavigate } from 'react-router'
 import { PanelProps } from './panelTypes'
-import { queryPrometheus } from './service/panel'
-import ChartAdaptor from '../../../components/charts/ChartAdapter'
-import { ChartPanelData, PrometheusResult, VectorTableData } from '../../../components/charts/chartTypes'
-import VectorTable from '../../../components/charts/VectorTable'
-// import echarts from '../charts/basic'
+import { usePanelData } from './service/panel'
+// import ChartAdapter from '../../../components/charts/ChartAdapter'
+import {
+  ChartPanelData,
+  // PrometheusResult,
+  VectorTableData,
+} from '../../../components/charts/chartTypes'
+// import VectorTable from '../../../components/charts/VectorTable'
+import { ChartAdapter, VectorTable } from '../../../components/charts'
 
 function PanelMini({
-  id, title, targets,
+  id, title, targets, type,
 }: PanelProps) {
-  const chartRef: any = useRef()
-  const wrapperRef: any = useRef()
   const navigateFunc = useNavigate()
+  const wrapperRef = useRef<any>()
   const queryArr = useMemo(() => targets?.map(({ expr }) => expr), [targets])
-  const [querys, setQuerys] = useState<any>([])
-  const [promResult, setPromResult] = useState<PrometheusResult[]>([])
+  const { data: promResult } = usePanelData(queryArr, type)
 
   useEffect(() => {
-    const queryPromiseArr = queryArr?.map((query) => () => new Promise((resolve) => {
-      queryPrometheus(query).then((res) => {
-        resolve(res)
-      })
-    }))
-
-    setQuerys(queryPromiseArr)
-  }, [])
-
-  useEffect(() => {
-    Promise.all(querys?.map((fn:any) => fn())).then((res) => {
-      setPromResult(res)
-    })
-  }, [querys])
-
+    console.log('rpm: ', promResult)
+  }, [promResult])
   return (
     <Card
       title={title}
       ref={wrapperRef}
       style={{
-        height: '100%', width: '100%',
+        height: '100%',
+        width: '100%',
       }}
       bodyStyle={{ height: '90%', width: '100%' }}
       onDoubleClick={() => {
-        navigateFunc(`panel/${id}`)
+        navigateFunc(`?panelId=${id}`)
       }}
       hoverable
     >
-      {
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+          textAlign: 'center',
+          overflow: 'auto',
+        }}
+        className="cancel-draggable"
+      >
+        {
         // eslint-disable-next-line no-nested-ternary
-        promResult?.length ? promResult[0]?.resultType === 'vector'
-          ? (
+        promResult?.length && !promResult[0].message?.error ? (
+          promResult[0]?.resultType === 'vector' ? (
             <VectorTable
-              style={{
-                height: '100%', width: '100%', textAlign: 'center', overflow: 'auto',
-              }}
               panelData={promResult[0]?.result as VectorTableData}
             />
-          )
-          : (
-            <ChartAdaptor
-              panelData={promResult[0]?.result as ChartPanelData}
-              type={promResult[0]?.resultType}
+          ) : (
+            <ChartAdapter
+              ref={wrapperRef}
+              panelData={(promResult[0].result ?? []) as ChartPanelData[]}
+              type={promResult[0]?.resultType ?? 'lineseries'}
             />
           )
-          : 'no panel'
+        ) : (
+          promResult[0]?.message?.error
+        )
       }
-      <div
-        style={{ height: '80%', width: '50%' }}
-        ref={chartRef}
-        className="chart"
-      />
+      </div>
     </Card>
   )
 }

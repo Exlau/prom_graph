@@ -5,4 +5,6 @@ export interface DashboardProps {
   owner:string;
   title:string;
   panels: PanelProps[];
+  description?:string;
+  tags?:string;
 }

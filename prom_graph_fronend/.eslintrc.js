@@ -39,7 +39,7 @@ module.exports = {
       },
     ],
     'linebreak-style': 0,
-    semi: ['error', 'never'],
+    semi: ['warn', 'never'],
     'react/jsx-uses-react': 2,
     'import/extensions': 'off',
     'react/jsx-props-no-spreading': 0,

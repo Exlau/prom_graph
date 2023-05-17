@@ -19,4 +19,6 @@ export const getDashboardById = async (id: string) => {
 
 export const updateDashboardById = (id: string, newDashboard: DashboardProps) => req.put('/dashboard', JSON.stringify(newDashboard))
 
+export const createDashboard = (newDashboard:DashboardProps) => req.post('/dashboard', JSON.stringify(newDashboard))
+
 export default {}

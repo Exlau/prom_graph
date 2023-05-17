@@ -11,11 +11,11 @@ export interface PanelEditorProps {
   id: string;
 }
 
-interface Datasource {
+export interface Datasource {
   url: string;
 }
 
-interface Target {
+export interface Target {
   datasource: Datasource;
   expr: string;
 }
@@ -36,4 +36,22 @@ export interface PanelProps {
   targets: Target[];
   gridPos: GridPos;
   // fieldConfig:FieldConfig
+}
+
+export interface LabelFilter {
+  label:string;
+  option:string;
+  value:string;
+}
+
+export interface Caculate{
+  option:string;
+  value:string;
+}
+
+export interface PanelDSL {
+  dimension:string;
+  metric:string;
+  labelFilters: LabelFilter[];
+  caculate:Caculate[];
 }

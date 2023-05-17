@@ -36,7 +36,7 @@ const generateTags = (tagJson:string) => {
 }
 
 // eslint-disable-next-line react/require-default-props
-function VectorTable(props:{panelData: VectorTableData, style?:CSSProperties}) {
+export function VectorTable(props:{panelData: VectorTableData, style?:CSSProperties}) {
   const { panelData, style = {} } = props
   const dataSet: any[] = useMemo(() => {
     const dataSetTemp: any[] = []
