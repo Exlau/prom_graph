@@ -54,6 +54,10 @@ router.get('/queryVector', async (ctx) => {
   }
 })
 
+router.get('/queryHis', async(ctx) => {
+  
+})
+
 router.get('/metrics', async (ctx, next) => {
   const result = await queryProm.metadata()
   ctx.body = processMetrics(result)

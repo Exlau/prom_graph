@@ -115,7 +115,7 @@ function DashboardDetail() {
   }
 
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       {!searchParams.get('panelId') ? (
         <div
           style={{

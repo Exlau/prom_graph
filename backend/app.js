@@ -56,9 +56,6 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
-
-
-
 // routes
 app.use(users.routes(), users.allowedMethods())
 app.use(index.routes(), index.allowedMethods())

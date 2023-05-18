@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   Space, List, Input, Table, Button, Tag,
 } from 'antd'
-import { useDashboardList } from './service/dashboard'
+import { deleteDashboard, useDashboardList } from './service/dashboard'
 import './index.css'
 import { DashboardProps } from './DashboardTypes'
 import DashboardNew from './DashboardNew'
@@ -68,6 +68,16 @@ function DashBoard() {
           >
             View
           </Button>
+          <Button
+            type="primary"
+            danger
+            onClick={() => {
+              console.log('delete: ', record._id)
+              deleteDashboard(record._id)
+            }}
+          >
+            Delete
+          </Button>
         </Space>
       ),
     },
@@ -81,18 +91,6 @@ function DashBoard() {
           size="large"
           loading
         />
-        {/* <Button
-          type="primary"
-          icon={<FolderAddOutlined />}
-          size="middle"
-          onClick={() => {
-            navigateFunc('/home/newdashboard', {
-              replace: true,
-            })
-          }}
-        >
-          New Dashboard
-        </Button> */}
         <DashboardNew />
       </Space>
       <List

@@ -1,24 +1,36 @@
 /* eslint-disable max-len */
-import React, { useRef, useEffect, forwardRef } from 'react'
+import React, {
+  useRef, useEffect, forwardRef, useMemo,
+} from 'react'
 // import echarts, { ECOption } from './basic'
 import * as echarts from 'echarts'
 import { ECOption } from './basic'
 import { getEchartType } from './utils'
 import { ChartPanelData } from './chartTypes'
-import { ChartType } from '../../pages/app/DashBoard/panelTypes'
+import { ChartType, PanelStyles } from '../../pages/app/DashBoard/panelTypes'
 
 function ChartAdapterWrapper(
-  { panelData, type }: {panelData: ChartPanelData[]; type: ChartType},
+  {
+    panelData,
+    type,
+    panelStyles,
+  }: {panelData: ChartPanelData[]; type: ChartType; panelStyles: PanelStyles},
   { current }: any,
 ) {
-  const seriesData = panelData.map((v: ChartPanelData) => ({
-    data: v?.seriesData?.map((yData: any, i: number) => [
-      new Date(v?.xData[i]),
-      yData,
-    ]),
-    showSymbol: false,
-    type: getEchartType(type),
-  }))
+  const seriesData = useMemo(
+    () => panelData.map((v: ChartPanelData) => ({
+      data: v?.seriesData?.map((yData: any, i: number) => [
+        new Date(v?.xData[i]),
+        yData,
+      ]),
+      showSymbol: false,
+      type: getEchartType(type),
+      itemStyle: panelStyles?.itemStyle,
+      lineStyle: panelStyles?.lineStyle,
+      ...panelStyles?.outerStyle,
+    })),
+    [panelStyles, panelData, type],
+  )
   const chartRef: any = useRef()
 
   useEffect(() => {
@@ -43,11 +55,10 @@ function ChartAdapterWrapper(
         {
           type: 'slider',
           show: true,
-          xAxisIndex: [
-            0,
-          ],
+          xAxisIndex: [0],
         },
       ],
+      // @ts-ignore
       series: [...seriesData],
     }
     chart.setOption(option)
@@ -62,7 +73,7 @@ function ChartAdapterWrapper(
     } catch (e) {
       console.log(e)
     }
-  }, [panelData])
+  }, [panelData, seriesData])
 
   return (
     <div ref={chartRef} style={{ zIndex: 999, height: '100%', width: '100%' }} />

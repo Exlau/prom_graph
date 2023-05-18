@@ -1,12 +1,14 @@
 import { ChartType } from '../../pages/app/DashBoard/panelTypes'
+import { EchartsType } from './types'
 
-type EchartsType = 'line' | 'bar'
+// type EchartsType = 'line' | 'bar'
 
 const chartTypeMap = {
   lineseries: 'line' as EchartsType,
   timeseries: 'line' as EchartsType,
   matrix: 'line' as EchartsType,
   vector: 'line' as EchartsType,
+  histogram: 'bar' as EchartsType,
 }
 
 export const getEchartType = (prometheusType: ChartType):EchartsType => chartTypeMap[prometheusType]

@@ -1,5 +1,5 @@
 import React, {
-  useMemo, useRef, useEffect,
+  useMemo, useRef,
 } from 'react'
 import { Card } from 'antd'
 import { useNavigate } from 'react-router'
@@ -15,16 +15,13 @@ import {
 import { ChartAdapter, VectorTable } from '../../../components/charts'
 
 function PanelMini({
-  id, title, targets, type,
+  id, title, targets, type, panelStyles,
 }: PanelProps) {
   const navigateFunc = useNavigate()
   const wrapperRef = useRef<any>()
   const queryArr = useMemo(() => targets?.map(({ expr }) => expr), [targets])
   const { data: promResult } = usePanelData(queryArr, type)
 
-  useEffect(() => {
-    console.log('rpm: ', promResult)
-  }, [promResult])
   return (
     <Card
       title={title}
@@ -59,6 +56,7 @@ function PanelMini({
             <ChartAdapter
               ref={wrapperRef}
               panelData={(promResult[0].result ?? []) as ChartPanelData[]}
+              panelStyles={panelStyles ?? {}}
               type={promResult[0]?.resultType ?? 'lineseries'}
             />
           )

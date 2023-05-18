@@ -1,4 +1,6 @@
-export type ChartType = 'timeseries' | 'lineseries' | 'vector';
+import { EchartsType } from '../../../components/charts/types'
+
+export type ChartType = 'timeseries' | 'lineseries' | 'vector' | 'histogram';
 
 export interface GridPos {
   x: number;
@@ -20,22 +22,39 @@ export interface Target {
   expr: string;
 }
 
-// interface FieldConfigDefaults{
-//   custom:
-// }
+export interface ItemStyles {
+  color?:string;
+  borderWidth?:number;
+  borderType?:string;
+  borderDashOffset?:string;
+  borderCap?:string;
+}
 
-// interface FieldConfig{
-//   defaults:,
-// }
+export interface LineStyle {
+  color?:string;
+  width?:number;
+  type:string;
+  opacity:number;
+}
+
+export interface OuterStyles {
+  smooth?:boolean
+}
+
+export interface PanelStyles {
+  itemStyle?:ItemStyles
+  outerStyle?:OuterStyles
+  lineStyle?: LineStyle
+}
 
 export interface PanelProps {
   id: string;
   type: ChartType;
+  panelStyles?:PanelStyles;
   title: string;
   datasource: Datasource;
   targets: Target[];
   gridPos: GridPos;
-  // fieldConfig:FieldConfig
 }
 
 export interface LabelFilter {
@@ -54,4 +73,21 @@ export interface PanelDSL {
   metric:string;
   labelFilters: LabelFilter[];
   caculate:Caculate[];
+}
+
+export interface PanelStylesForm {
+  styleName:string;
+  label:string;
+  renderEchartTypes:EchartsType[];
+  renderCpn:any;
+}
+
+export interface PanelSettingsForm {
+  settingName:string;
+  label:string;
+  renderCpn:any;
+}
+
+export interface OuterStylesForm extends PanelStylesForm {
+
 }

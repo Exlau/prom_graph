@@ -63,4 +63,64 @@ export const CACULATE_OPTIONS = [
   },
 ]
 
+export const BORDER_OPTIONS = [
+  {
+    value: 'solid',
+    label: 'solid',
+  },
+  {
+    value: 'dashed',
+    label: 'dashed',
+  },
+  {
+    value: 'dotted',
+    label: 'dotted',
+  },
+]
+
+export const BORDER_CAP_OPTIONS = [
+  {
+    value: 'butt',
+    label: 'butt',
+  },
+  {
+    value: 'round',
+    label: 'round',
+  },
+  {
+    value: 'square',
+    label: 'square',
+  },
+]
+
+export const LINE_TYPE_OPTIONS = [
+  {
+    value: 'solid',
+    label: 'solid',
+  },
+  {
+    value: 'dashed',
+    label: 'dashed',
+  },
+  {
+    value: 'dotted',
+    label: 'dotted',
+  },
+]
+
+export const PANEL_TYPE_OPTIONS = [
+  {
+    value: 'lineseries',
+    label: 'lineseries',
+  },
+  {
+    value: 'timeseries',
+    label: 'timeseries',
+  },
+  {
+    value: 'vector',
+    label: 'vector',
+  },
+]
+
 export default {}

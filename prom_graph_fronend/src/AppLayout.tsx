@@ -65,7 +65,7 @@ function AppLayout() {
   const breadcrumbItems = pathSnippets.join('/')
 
   return (
-    <Layout style={{ height: '100%' }}>
+    <Layout style={{ height: '100vh' }}>
       <Header className="header">
         <div className="logo" />
         <UserDropDown className="user-dropdown" />
@@ -89,10 +89,11 @@ function AppLayout() {
             items={menus}
           />
         </Sider>
-        <Layout style={{ padding: '0 24px 24px', height: '100%' }}>
+        <Layout style={{ padding: '0 24px 24px', height: '1400px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>{breadcrumbItems}</Breadcrumb>
           <Content
             style={{
+              height: '100%',
               padding: 24,
               margin: 0,
               minHeight: 280,

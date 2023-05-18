@@ -5,7 +5,7 @@ interface ChartOption{
 
 export interface ChartAdaptorOption{
   title:string;
-  type: 'lineseries' | 'timeseries' | 'vector';
+  type: ChartType;
   xData: Array<any>;
   seriesData:Array<any>
 }

@@ -18,6 +18,8 @@ import {
 import { setPanelJson } from '../../../store/reducers/dashboardReducer'
 import QueryForm from './QueryForm'
 import { PanelMini } from './PanelMini'
+import PanelStyleForm from './PanelStyleForm'
+import { getEchartType } from '../../../components/charts/utils'
 
 const initialPanel: PanelProps = {
   id: '',
@@ -108,7 +110,7 @@ const parseDSLToPromQL = (panelDSL: PanelDSL): string => {
   return promQL
 }
 
-function PanelEditor({ dashboardData }:{dashboardData:DashboardProps}) {
+function PanelEditor({ dashboardData }: {dashboardData: DashboardProps}) {
   const dispatch = useDispatch()
   const wrapperRef: any = useRef()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -140,52 +142,81 @@ function PanelEditor({ dashboardData }:{dashboardData:DashboardProps}) {
     [panel],
   )
 
+  const onPanelStyleChange = useCallback(
+    (value: any) => {
+      // eslint-disable-next-line max-len
+      const newPanel = {
+        ...panel,
+        title: value?.title ?? '',
+        type: value?.type ?? 'line',
+        panelStyles: {
+          itemStyle: value?.itemStyle,
+          outerStyle: value?.outerStyle,
+          lineStyle: value?.lineStyle,
+        },
+      }
+      dispatch(setPanelJson<any>(newPanel))
+    },
+    [panel],
+  )
+
   return (
-    <Row gutter={16} className="panel-editor-root">
-      <Col span={18} className="preview-editor">
-        <Row style={{ zIndex: 999 }}>
-          <Button
-            type="primary"
-            size="large"
-            icon={<BackwardFilled />}
-            onClick={() => {
-              searchParams.delete('panelId')
-              setSearchParams(searchParams.toString(), { replace: true })
+    <div style={{ height: '100%', overflowY: 'auto' }}>
+      <Row gutter={16} className="panel-editor-root">
+        <Col
+          style={{ height: '100%', overflowY: 'auto' }}
+          span={19}
+          className="preview-editor"
+        >
+          <Row style={{ zIndex: 999 }}>
+            <Button
+              type="primary"
+              size="large"
+              icon={<BackwardFilled />}
+              onClick={() => {
+                searchParams.delete('panelId')
+                setSearchParams(searchParams.toString(), { replace: true })
+              }}
+            >
+              Back
+            </Button>
+          </Row>
+          <Row
+            style={{
+              height: '700px',
+              width: '100%',
+              padding: 'px',
+              overflow: 'auto',
             }}
-            style={{}}
+            ref={wrapperRef}
           >
-            Back
-          </Button>
-        </Row>
-        <Row
-          style={{
-            height: '700px',
-            width: '100%',
-            padding: 'px',
-            overflow: 'auto',
-          }}
-          ref={wrapperRef}
-        >
-          <PanelMini {...panel} />
-        </Row>
-        <Row
-          style={{
-            height: '800px',
-            width: '100%',
-            padding: '10px',
-            overflow: 'auto',
-          }}
-        >
-          <QueryForm
-            dsl={parsePromQLtoDSL(
-              panel?.targets ? panel?.targets[0]?.expr ?? '' : '',
-            )}
-            onFinish={onQueryExprChange}
+            <PanelMini {...panel} />
+          </Row>
+          <Row
+            style={{
+              height: '800px',
+              width: '100%',
+              padding: '10px',
+              overflow: 'auto',
+            }}
+          >
+            <QueryForm
+              dsl={parsePromQLtoDSL(
+                panel?.targets ? panel?.targets[0]?.expr ?? '' : '',
+              )}
+              onFinish={onQueryExprChange}
+            />
+          </Row>
+        </Col>
+        <Col style={{ height: '100%' }} span={5} className="config">
+          <PanelStyleForm
+            type={getEchartType(panel.type)}
+            onFinish={onPanelStyleChange}
+            panelStylesInitialValue={panel?.panelStyles ?? {}}
           />
-        </Row>
-      </Col>
-      <Col span={6} className="config" />
-    </Row>
+        </Col>
+      </Row>
+    </div>
   )
 }
 
