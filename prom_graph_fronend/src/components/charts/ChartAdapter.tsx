@@ -18,17 +18,22 @@ function ChartAdapterWrapper(
   { current }: any,
 ) {
   const seriesData = useMemo(
-    () => panelData.map((v: ChartPanelData) => ({
-      data: v?.seriesData?.map((yData: any, i: number) => [
-        new Date(v?.xData[i]),
-        yData,
-      ]),
-      showSymbol: false,
-      type: getEchartType(type),
-      itemStyle: panelStyles?.itemStyle,
-      lineStyle: panelStyles?.lineStyle,
-      ...panelStyles?.outerStyle,
-    })),
+    () => {
+      if (panelData && panelData?.map) {
+        return panelData?.map((v: ChartPanelData) => ({
+          data: v?.seriesData?.map((yData: any, i: number) => [
+            new Date(v?.xData[i]),
+            yData,
+          ]),
+          showSymbol: false,
+          type: getEchartType(type),
+          itemStyle: panelStyles?.itemStyle,
+          lineStyle: panelStyles?.lineStyle,
+          ...panelStyles?.outerStyle,
+        })) ?? []
+      }
+      return []
+    },
     [panelStyles, panelData, type],
   )
   const chartRef: any = useRef()

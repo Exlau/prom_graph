@@ -36,7 +36,7 @@ export const usePanelData = (
         })
       }),
     ),
-    [queryArr],
+    [queryArr, type],
   )
 
   useEffect(() => {

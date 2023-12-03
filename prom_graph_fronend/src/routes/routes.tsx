@@ -6,7 +6,7 @@ import AppLayout from '../AppLayout'
 
 const DashBoard = React.lazy(() => (import('../pages/app/DashBoard/index')))
 const DashboardDetail = React.lazy(() => (import('../pages/app/DashBoard/DashboardDetail')))
-const ChartDesign = React.lazy(() => (import('../pages/app/ChartDesign')))
+const Datasource = React.lazy(() => (import('../pages/app/Datasource')))
 const LoginPage = React.lazy(() => (import('../pages/Login/Login')))
 const ConfigPage = React.lazy(() => (import('../pages/app/ConfigPage')))
 // const PanelEditor = React.lazy(() => (import('../pages/app/DashBoard/PanelEditor')))
@@ -37,8 +37,8 @@ const routes: RouteObject[] = [
             element: <DashboardDetail />,
           },
           {
-            path: 'chartDesign',
-            element: <ChartDesign />,
+            path: 'datasource',
+            element: <Datasource />,
           },
           {
             path: 'config',

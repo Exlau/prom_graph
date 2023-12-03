@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const { queryProm } = require('../../prometheus/client')
 const { distinctChart, processMetrics, processLabels } = require('./dataPreProcess')
 const { formatLineChart } = require('./dataPreProcess/formatLineChart')
-const { ReqPrometheus } = require('../../Utils/request')
+const { ReqPrometheus,reloadPrometheus } = require('../../Utils/request')
 
 router.prefix('/prometheus')
 
@@ -22,13 +22,13 @@ router.get('/query', async (ctx, next) => {
   const endHalfAgo = new Date(end.getTime() - 30 * 60 * 1000); // 计算半小时前的日期
 
   const start = endHalfAgo.getTime(); // 获取半小时前的日期毫秒值
- 
+
   try {
     const result = await queryProm.rangeQuery(queryExpr, start, end, 60)
-    if(result.resultType === 'matrix'){
+    if (result.resultType === 'matrix') {
       result.result = formatLineChart(result.result)
     }
-    ctx.body = result 
+    ctx.body = result
   } catch (e) {
     ctx.status = 500
     ctx.body = { "message": e?.data }
@@ -54,8 +54,59 @@ router.get('/queryVector', async (ctx) => {
   }
 })
 
-router.get('/queryHis', async(ctx) => {
-  
+router.get('/runtimeinfo', async (ctx, next) => {
+  try {
+    const result = await queryProm.statusRuntimeInfo()
+    ctx.body = result
+  } catch (e) {
+    ctx.body = {
+      message: e
+    }
+  }
+})
+
+router.get('/buildinfo', async (ctx, next) => {
+  try {
+    const result = await queryProm.statusBuildinfo()
+    ctx.body = result
+  } catch (e) {
+    ctx.body = {
+      message: e
+    }
+  }
+})
+
+router.get('/tsdbinfo', async (ctx, next) => {
+  try {
+    const result = await queryProm.statusTSDB()
+    ctx.body = result
+  } catch (e) {
+    ctx.body = {
+      message: e
+    }
+  }
+})
+
+router.get('/config',async (ctx) => {
+  try {
+    const result = await queryProm.status()
+    ctx.body = result
+  } catch (e) {
+    ctx.body = {
+      message: e
+    }
+  }
+})
+
+router.post('/reloadconfig',async (ctx) => {
+  try {
+    const result = await reloadPrometheus()
+    ctx.body = result
+  } catch (e) {
+    ctx.body = {
+      message: e
+    }
+  }
 })
 
 router.get('/metrics', async (ctx, next) => {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -20,6 +21,7 @@ import {
 import { PanelProps, GridPos } from './panelTypes'
 import { DashboardProps } from './DashboardTypes'
 import { PanelEditor } from './PanelEditor'
+import { PanelTest1 } from './PanelTest'
 
 function DashboardDetail() {
   const dispatch = useDispatch()
@@ -58,11 +60,19 @@ function DashboardDetail() {
       }
     })
 
+    // layout.push({
+    //   i: 'test-id',
+    //   x: 0,
+    //   y: 0,
+    //   w: 7,
+    //   h: 4,
+    // })
     setPanelList(dashboardData?.panels)
     setPanelLayout(layout)
   }, [dashboardData])
 
   const handleLayoutChange = (pos: (GridPos & {i: string})[]) => {
+    console.log('onlayout change: ', pos)
     if (mount) {
       setMount(false)
       return
@@ -143,6 +153,9 @@ function DashboardDetail() {
                 <PanelMini {...p} />
               </div>
             ))}
+            <div key="test-id">
+              <PanelTest1 id="test-id" title="chart0" />
+            </div>
           </GridLayout>
         </div>
       ) : (

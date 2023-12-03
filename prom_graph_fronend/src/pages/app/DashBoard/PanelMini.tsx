@@ -48,7 +48,7 @@ function PanelMini({
         {
         // eslint-disable-next-line no-nested-ternary
         promResult?.length && !promResult[0].message?.error ? (
-          promResult[0]?.resultType === 'vector' ? (
+          type === 'vector' ? (
             <VectorTable
               panelData={promResult[0]?.result as VectorTableData}
             />
@@ -57,7 +57,7 @@ function PanelMini({
               ref={wrapperRef}
               panelData={(promResult[0].result ?? []) as ChartPanelData[]}
               panelStyles={panelStyles ?? {}}
-              type={promResult[0]?.resultType ?? 'lineseries'}
+              type={type ?? 'lineseries'}
             />
           )
         ) : (

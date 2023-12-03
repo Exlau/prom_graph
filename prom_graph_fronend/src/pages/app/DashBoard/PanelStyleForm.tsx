@@ -145,6 +145,8 @@ const LineChartSettingsForm: PanelStylesForm[] = [
   },
 ]
 
+// const pieChartSettingsForm = []
+
 const panelSettingsForm: PanelSettingsForm[] = [
   {
     settingName: 'title',
@@ -204,14 +206,7 @@ function PanelStyleForm({
               overflow: 'auto',
             }}
           >
-            {PanelStyleSettings.map(({ renderCpn, renderEchartTypes }) => {
-              if (
-                renderEchartTypes.findIndex((types) => types === type) !== -1
-              ) {
-                return renderCpn()
-              }
-              return null
-            })}
+            {PanelStyleSettings.map(({ renderCpn }) => renderCpn())}
           </div>
           <Divider>Chart Style Editor</Divider>
           {LineChartSettingsForm.map(({ renderCpn, renderEchartTypes }) => {

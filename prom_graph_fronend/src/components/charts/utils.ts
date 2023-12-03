@@ -9,6 +9,7 @@ const chartTypeMap = {
   matrix: 'line' as EchartsType,
   vector: 'line' as EchartsType,
   histogram: 'bar' as EchartsType,
+  pie: 'pie' as EchartsType,
 }
 
 export const getEchartType = (prometheusType: ChartType):EchartsType => chartTypeMap[prometheusType]

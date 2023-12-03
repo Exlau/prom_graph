@@ -29,9 +29,13 @@ const TagColorMap:{
 const generateTags = (tagJson:string) => {
   const { labels } = JSON.parse(tagJson)
   return (
-    <>
-      {Object.keys(labels).map((label) => <Tag color={TagColorMap[label] ?? 'geekblue'}>{`${label}=${labels[label]}`}</Tag>)}
-    </>
+    <div>
+      {
+        labels
+          ? Object.keys(labels).map((label) => <Tag color={TagColorMap[label] ?? 'geekblue'}>{`${label}=${labels[label]}`}</Tag>)
+          : <div />
+      }
+    </div>
   )
 }
 
@@ -45,8 +49,8 @@ export function VectorTable(props:{panelData: VectorTableData, style?:CSSPropert
         tagJson: key,
         data: [
           {
-            value: panelData[key][0].value,
-            time: panelData[key][0].time,
+            value: panelData[key][0]?.value,
+            time: panelData[key][0]?.time,
           },
         ],
       })

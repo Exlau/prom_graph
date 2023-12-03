@@ -10,12 +10,14 @@ import './index.css'
 import { DashboardProps } from './DashboardTypes'
 import DashboardNew from './DashboardNew'
 import { getRandomHexColor } from './utils'
+import { PanelTest1 } from './PanelTest'
 
 const position = 'bottom'
+const pageSize = 6
 
 function DashBoard() {
   const [page, setPage] = useState(1)
-  const { isLoading, error, data } = useDashboardList(page, 6)
+  const { isLoading, error, data } = useDashboardList(page, pageSize)
   const navigateFunc = useNavigate()
   const tableData: any = useMemo(
     () => (data?.docs as DashboardProps[])?.map(
@@ -72,7 +74,6 @@ function DashBoard() {
             type="primary"
             danger
             onClick={() => {
-              console.log('delete: ', record._id)
               deleteDashboard(record._id)
             }}
           >
@@ -99,7 +100,7 @@ function DashBoard() {
             setPage(p)
           },
           position,
-          pageSize: 6,
+          pageSize,
           total: data?.totalDocs ?? 0,
         }}
       >
@@ -117,6 +118,7 @@ function DashBoard() {
           )}
         </Space>
       </List>
+      <PanelTest1 id="asdas" title="sdaasdas" />
     </Space>
   )
 }

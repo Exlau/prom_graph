@@ -121,6 +121,14 @@ export const PANEL_TYPE_OPTIONS = [
     value: 'vector',
     label: 'vector',
   },
+  {
+    value: 'histogram',
+    label: 'histogram',
+  },
+  {
+    value: 'pie',
+    label: 'pie',
+  },
 ]
 
 export default {}
