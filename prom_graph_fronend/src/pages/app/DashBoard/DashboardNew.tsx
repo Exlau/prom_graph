@@ -1,94 +1,101 @@
+import React, { useState } from 'react'
 import {
-  Button, Form, Input, Select,
+  Button, Form, Input, Modal,
 } from 'antd'
-import React from 'react'
+import { createDashboard } from './service/dashboard'
+import { DashboardProps } from './DashboardTypes'
 
-const { Option } = Select
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
+interface Values {
+  title: string;
+  description: string;
+  modifier: string;
 }
 
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
+interface CollectionCreateFormProps {
+  open: boolean;
+  // eslint-disable-next-line no-unused-vars
+  onCreate: (values: Values) => void;
+  onCancel: () => void;
+}
+
+function CollectionCreateForm({
+  open,
+  onCreate,
+  onCancel,
+}:CollectionCreateFormProps) {
+  const [form] = Form.useForm()
+  return (
+    <Modal
+      open={open}
+      title="Create New Dashboard"
+      okText="Create"
+      cancelText="Cancel"
+      onCancel={onCancel}
+      onOk={() => {
+        form
+          .validateFields()
+          .then((values) => {
+            form.resetFields()
+            onCreate(values)
+          })
+          .catch((info) => {
+            console.log('Validate Failed:', info)
+          })
+      }}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        name="form_in_modal"
+        initialValues={{ modifier: 'public' }}
+      >
+        <Form.Item
+          name="title"
+          label="Title"
+          rules={[{ required: true, message: 'Please input the title of dashboard!' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item name="description" label="Description">
+          <Input type="textarea" />
+        </Form.Item>
+        <Form.Item name="tags" label="Tags">
+          <Input type="textarea" placeholder="Input Tags split by ;" />
+        </Form.Item>
+      </Form>
+    </Modal>
+  )
 }
 
 function DashboardNew() {
-  const [form] = Form.useForm()
+  const [open, setOpen] = useState(false)
 
-  const onGenderChange = (value: string) => {
-    switch (value) {
-      case 'male':
-        form.setFieldsValue({ note: 'Hi, man!' })
-        break
-      case 'female':
-        form.setFieldsValue({ note: 'Hi, lady!' })
-        break
-      case 'other':
-        form.setFieldsValue({ note: 'Hi there!' })
-        break
-      default:
-    }
+  const onCreate = (values: any) => {
+    createDashboard({
+      ...values,
+    } as DashboardProps).then(() => {
+      setOpen(false)
+    })
   }
 
-  const onFinish = () => {}
-
-  const onReset = () => {
-    form.resetFields()
-  }
-
-  const onFill = () => {
-    form.setFieldsValue({ note: 'Hello world!', gender: 'male' })
-  }
   return (
-    <Form
-      {...layout}
-      form={form}
-      name="control-hooks"
-      onFinish={onFinish}
-      style={{ maxWidth: 600 }}
-    >
-      <Form.Item name="note" label="Note" rules={[{ required: true }]}>
-        <Input />
-      </Form.Item>
-      <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
-        <Select
-          placeholder="Select a option and change input text above"
-          onChange={onGenderChange}
-          allowClear
-        >
-          <Option value="male">male</Option>
-          <Option value="female">female</Option>
-          <Option value="other">other</Option>
-        </Select>
-      </Form.Item>
-      <Form.Item
-        noStyle
-        shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
+    <div>
+      <Button
+        type="primary"
+        onClick={() => {
+          setOpen(true)
+        }}
       >
-        {({ getFieldValue }) => (getFieldValue('gender') === 'other' ? (
-          <Form.Item
-            name="customizeGender"
-            label="Customize Gender"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-        ) : null)}
-      </Form.Item>
-      <Form.Item {...tailLayout}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-        <Button htmlType="button" onClick={onReset}>
-          Reset
-        </Button>
-        <Button type="link" htmlType="button" onClick={onFill}>
-          Fill form
-        </Button>
-      </Form.Item>
-    </Form>
+        新建仪表盘
+      </Button>
+      <CollectionCreateForm
+        open={open}
+        onCreate={onCreate}
+        onCancel={() => {
+          setOpen(false)
+        }}
+      />
+    </div>
   )
 }
 

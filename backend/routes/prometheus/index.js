@@ -1,20 +1,10 @@
 const router = require('koa-router')()
 const { queryProm } = require('../../prometheus/client')
-const { distinctChart } = require('./dataPreProcess')
+const { distinctChart, processMetrics, processLabels } = require('./dataPreProcess')
+const { formatLineChart } = require('./dataPreProcess/formatLineChart')
+const { ReqPrometheus,reloadPrometheus } = require('../../Utils/request')
 
 router.prefix('/prometheus')
-
-// get metrics
-// router.get('/metric', async function (ctx, next) {
-//   try {
-//     const prometheusRes = await ReqPrometheus('/metadata')
-//     ctx.body = prometheusRes.data
-
-//   } catch (e) {
-//     console.log('error: ', e)
-//   }
-
-// })
 
 router.get('/test', async (ctx) => {
   ctx.body = 'test result'
@@ -34,13 +24,104 @@ router.get('/query', async (ctx, next) => {
   const start = endHalfAgo.getTime(); // 获取半小时前的日期毫秒值
 
   try {
-    const result = await queryProm.rangeQuery(queryExpr, start, end, 14)
-    // result.result = distinctChart(result.result)
+    const result = await queryProm.rangeQuery(queryExpr, start, end, 60)
+    if (result.resultType === 'matrix') {
+      result.result = formatLineChart(result.result)
+    }
     ctx.body = result
   } catch (e) {
     ctx.status = 500
-    ctx.body = {message:e}
+    ctx.body = { "message": e?.data }
+    console.log(e)
   }
+})
+
+router.get('/queryVector', async (ctx) => {
+  const { queryExpr } = ctx.query
+
+  if (!queryExpr) {
+    ctx.status = 400
+    return
+  }
+
+  try {
+    const result = await queryProm.instantQuery(queryExpr)
+    result.result = distinctChart(result.result)
+    ctx.body = result
+  } catch (e) {
+    ctx.status = 500
+    ctx.body = { "message": e?.data }
+  }
+})
+
+router.get('/runtimeinfo', async (ctx, next) => {
+  try {
+    const result = await queryProm.statusRuntimeInfo()
+    ctx.body = result
+  } catch (e) {
+    ctx.body = {
+      message: e
+    }
+  }
+})
+
+router.get('/buildinfo', async (ctx, next) => {
+  try {
+    const result = await queryProm.statusBuildinfo()
+    ctx.body = result
+  } catch (e) {
+    ctx.body = {
+      message: e
+    }
+  }
+})
+
+router.get('/tsdbinfo', async (ctx, next) => {
+  try {
+    const result = await queryProm.statusTSDB()
+    ctx.body = result
+  } catch (e) {
+    ctx.body = {
+      message: e
+    }
+  }
+})
+
+router.get('/config',async (ctx) => {
+  try {
+    const result = await queryProm.status()
+    ctx.body = result
+  } catch (e) {
+    ctx.body = {
+      message: e
+    }
+  }
+})
+
+router.post('/reloadconfig',async (ctx) => {
+  try {
+    const result = await reloadPrometheus()
+    ctx.body = result
+  } catch (e) {
+    ctx.body = {
+      message: e
+    }
+  }
+})
+
+router.get('/metrics', async (ctx, next) => {
+  const result = await queryProm.metadata()
+  ctx.body = processMetrics(result)
+})
+
+router.get('/labels', async (ctx, next) => {
+  const { data } = await ReqPrometheus.get('/labels')
+  ctx.body = processLabels(data)
+})
+
+router.get('/dimensions', async (ctx, next) => {
+  const result = await queryProm.series()
+  ctx.body = result
 })
 
 // edit dashboard

@@ -47,14 +47,17 @@ router.put('/', async (ctx, next) => {
 
 })
 
-router.post('/new', async (ctx, next) => {
+// new dashboard
+router.post('/', async (ctx, next) => {
   const { name: owner } = ctx.state.user
-  const { title, id, panels } = ctx.request.body
+  const { title, id, panels, description, tags } = ctx.request.body
   const newDashboard = new Dashboard({
     owner: owner,
     title,
     id,
-    panels
+    panels,
+    tags,
+    description
   })
 
   try {
@@ -66,6 +69,23 @@ router.post('/new', async (ctx, next) => {
 
   ctx.body = { message: 'Created successfully!' }
 })
+
+// delete dashboard
+router.delete('/', async (ctx, next) => {
+  const { name: owner } = ctx.state.user
+  const { id } = ctx.query
+  const result = await Dashboard.deleteOne({ _id:id, owner })
+  if (result.deletedCount === 1) {
+    ctx.body = {
+      message: 'success delete'
+    }
+  } else {
+    ctx.body = {
+      message: result
+    }
+  }
+})
+
 
 router.post('/save', async (ctx, next) => {
   const { name: owner } = ctx.state.user

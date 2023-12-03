@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
-const {mongoConnection} = require("../mongo");
+const { mongoConnection } = require("../mongo");
 
 // type ChartType = "timeseries" | "lineseries";
 
@@ -20,10 +20,12 @@ const {mongoConnection} = require("../mongo");
 
 const dashboardSchema = new mongoose.Schema({
   owner: {
-    type:Array,
-    required:true
+    type: Array,
+    required: true
   },
   title: String,
+  description: String,
+  tags: String,
   panels: {
     type: [Object],
     required: true,
@@ -49,6 +51,19 @@ const dashboardSchema = new mongoose.Schema({
     },
   },
 });
+
+dashboardSchema.pre('save', (next) => {
+  if (!this.tags) {
+    this.tags = ""
+  }
+  if (!this.description) {
+    this.description = 'No Description'
+  }
+  if(!this.panels){
+    this.panels = []
+  }
+  next()
+})
 
 dashboardSchema.plugin(mongoosePaginate);
 

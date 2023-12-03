@@ -31,7 +31,7 @@ router.post('/login', async (ctx, next) => {
 
   const { body } = ctx.request
   // TODO:密钥使用环境变量注入
-  const token = jsonwebtoken.sign({ name: body?.username }, 'test-sec', { expiresIn: '30d' })
+  const token = jsonwebtoken.sign({ name: body?.username }, 'test-sec', { expiresIn: '50d' })
   ctx.response.body = { "token": token };
 })
 

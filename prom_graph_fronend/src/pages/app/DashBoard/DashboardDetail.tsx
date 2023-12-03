@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -5,21 +6,27 @@ import { useParams } from 'react-router'
 import GridLayout from 'react-grid-layout'
 import { Divider, Button } from 'antd'
 import { cloneDeep } from 'lodash'
-// import { LineChart } from '../../../components/charts'
-import { PanelMini } from '../../../components/panel'
+import { useSearchParams } from 'react-router-dom'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { nanoid } from 'nanoid'
+import { PanelMini } from './PanelMini'
 import './DashboardDetail.css'
 // import { useDashboardById, updateDashboardById } from './service/dashboard'
 import {
   fetchDashboardById,
   saveDashboardJson,
   setDashboardJson,
+  setPanelJson,
 } from '../../../store/reducers/dashboardReducer'
 import { PanelProps, GridPos } from './panelTypes'
 import { DashboardProps } from './DashboardTypes'
+import { PanelEditor } from './PanelEditor'
+import { PanelTest1 } from './PanelTest'
 
 function DashboardDetail() {
   const dispatch = useDispatch()
   const { id = '' } = useParams()
+  const [searchParams] = useSearchParams()
 
   const [mount, setMount] = useState<boolean>(true)
   const [panelList, setPanelList] = useState<PanelProps[] | undefined>([])
@@ -53,15 +60,19 @@ function DashboardDetail() {
       }
     })
 
+    // layout.push({
+    //   i: 'test-id',
+    //   x: 0,
+    //   y: 0,
+    //   w: 7,
+    //   h: 4,
+    // })
     setPanelList(dashboardData?.panels)
-    // setPanelList(
-    //   dashboardData?.panels?.length
-    //     ? [dashboardData?.panels[2]] : dashboardData.panels,
-    // )
     setPanelLayout(layout)
   }, [dashboardData])
 
   const handleLayoutChange = (pos: (GridPos & {i: string})[]) => {
+    console.log('onlayout change: ', pos)
     if (mount) {
       setMount(false)
       return
@@ -87,9 +98,25 @@ function DashboardDetail() {
     })
 
     setPanelLayout(newLayout)
-    // setDashboardJson(newDashboardJson)
     // @ts-ignore
     dispatch(setDashboardJson(newDashboardJson))
+  }
+
+  const handleCreatePanel = () => {
+    const newPanel = {
+      id: nanoid(),
+      type: 'lineseries',
+      title: '',
+      datasource: { url: '' },
+      targets: [],
+      gridPos: {
+        x: 0,
+        y: 0,
+        w: 8,
+        h: 6,
+      },
+    } as PanelProps
+    dispatch(setPanelJson<any>(newPanel))
   }
 
   const handleSaveDashboard = () => {
@@ -98,31 +125,42 @@ function DashboardDetail() {
   }
 
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100%',
-        position: 'relative',
-      }}
-    >
-      <div className="dashboard-options">
-        <Button onClick={handleSaveDashboard}>Save Dashboard</Button>
-      </div>
-      <Divider />
-      <GridLayout
-        className="layout"
-        layout={panelLayout}
-        cols={12}
-        rowHeight={30}
-        width={2400}
-        onLayoutChange={handleLayoutChange}
-      >
-        {panelList?.map((p) => (
-          <div key={p.id}>
-            <PanelMini {...p} />
+    <div style={{ height: '100%' }}>
+      {!searchParams.get('panelId') ? (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            position: 'relative',
+          }}
+        >
+          <div className="dashboard-options">
+            <Button onClick={handleSaveDashboard}>Save Dashboard</Button>
+            <Button onClick={handleCreatePanel}>Create Panel</Button>
           </div>
-        ))}
-      </GridLayout>
+          <Divider />
+          <GridLayout
+            className="layout"
+            layout={panelLayout}
+            cols={12}
+            rowHeight={30}
+            width={2400}
+            onLayoutChange={handleLayoutChange}
+            draggableCancel=".cancel-draggable"
+          >
+            {panelList?.map((p) => (
+              <div key={p.id}>
+                <PanelMini {...p} />
+              </div>
+            ))}
+            <div key="test-id">
+              <PanelTest1 id="test-id" title="chart0" />
+            </div>
+          </GridLayout>
+        </div>
+      ) : (
+        <PanelEditor dashboardData={dashboardData} />
+      )}
     </div>
   )
 }

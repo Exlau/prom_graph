@@ -10,7 +10,12 @@ import {
 import { DashboardState, RootState } from './types'
 
 const initialState: DashboardState = {
-  dashboardJson: null,
+  dashboardJson: {
+    _id: '',
+    title: '',
+    panels: [],
+    owner: '',
+  },
   status: 'idle',
   error: null,
 }
@@ -41,6 +46,22 @@ export const dashboardSlice = createSlice({
     setDashboardJson: (state: DashboardState, action: any) => {
       state.dashboardJson = action.payload
     },
+    setPanelJson: (state:DashboardState, action:any) => {
+      const panelJson = action.payload
+      if (state.dashboardJson?.panels && state.dashboardJson?.panels.length !== 0) {
+        const editIndex = state.dashboardJson.panels.findIndex((panel) => panel.id === panelJson.id)
+        if (editIndex !== -1) {
+          state.dashboardJson.panels[editIndex] = panelJson
+        } else {
+          state.dashboardJson.panels.push(panelJson)
+        }
+      } else {
+        // @ts-ignore
+        state.dashboardJson.panels = [
+          { ...panelJson },
+        ]
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -69,7 +90,7 @@ export const dashboardSlice = createSlice({
   },
 })
 
-export const { setDashboardJson } = dashboardSlice.actions
+export const { setDashboardJson, setPanelJson } = dashboardSlice.actions
 export const dashboardReducer = dashboardSlice.reducer
 
 export default dashboardSlice.reducer

@@ -29,14 +29,18 @@ const TagColorMap:{
 const generateTags = (tagJson:string) => {
   const { labels } = JSON.parse(tagJson)
   return (
-    <>
-      {Object.keys(labels).map((label) => <Tag color={TagColorMap[label] ?? 'geekblue'}>{`${label}=${labels[label]}`}</Tag>)}
-    </>
+    <div>
+      {
+        labels
+          ? Object.keys(labels).map((label) => <Tag color={TagColorMap[label] ?? 'geekblue'}>{`${label}=${labels[label]}`}</Tag>)
+          : <div />
+      }
+    </div>
   )
 }
 
 // eslint-disable-next-line react/require-default-props
-function VectorTable(props:{panelData: VectorTableData, style?:CSSProperties}) {
+export function VectorTable(props:{panelData: VectorTableData, style?:CSSProperties}) {
   const { panelData, style = {} } = props
   const dataSet: any[] = useMemo(() => {
     const dataSetTemp: any[] = []
@@ -45,8 +49,8 @@ function VectorTable(props:{panelData: VectorTableData, style?:CSSProperties}) {
         tagJson: key,
         data: [
           {
-            value: panelData[key][0].value,
-            time: panelData[key][0].time,
+            value: panelData[key][0]?.value,
+            time: panelData[key][0]?.time,
           },
         ],
       })

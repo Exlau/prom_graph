@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import { Card } from 'antd'
+// eslint-disable-next-line import/no-unresolved
 import { ECBasicOption } from 'echarts/types/dist/shared'
 
 import echarts from './basic'

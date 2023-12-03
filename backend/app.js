@@ -10,6 +10,7 @@ const index = require('./routes/index')
 const users = require('./routes/users')
 const dashboard = require('./routes/dashboard')
 const prometheus = require('./routes/prometheus')
+const dockerRoutes = require('./routes/docker')
 const cors = require('koa2-cors')
 const jwt = require('koa-jwt')
 
@@ -56,13 +57,11 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
-
-
-
 // routes
 app.use(users.routes(), users.allowedMethods())
 app.use(index.routes(), index.allowedMethods())
 app.use(dashboard.routes(), dashboard.allowedMethods())
 app.use(prometheus.routes(), prometheus.allowedMethods())
+app.use(dockerRoutes.routes(), dockerRoutes.allowedMethods())
 
 module.exports = app
