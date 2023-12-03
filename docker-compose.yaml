@@ -40,22 +40,22 @@ services:
     volumes:
       - mongo_data:/data/db
       - ./prometheus/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh
-  frontend:
-    build:
-      context: ./prom_graph_fronend  # 前端应用的路径
-      dockerfile: Dockerfile        # Dockerfile的文件名
-    container_name: "frontend1"
-    restart: always
-    ports:
-      - "3000:8080"
-  backend:
-    build:
-      context: ./backend  # 前端应用的路径
-      dockerfile: Dockerfile        # Dockerfile的文件名
-    container_name: "backend1"
-    restart: always
-    ports:
-      - "4000:4000"   
+  # frontend:
+  #   build:
+  #     context: ./prom_graph_fronend  # 前端应用的路径
+  #     dockerfile: Dockerfile        # Dockerfile的文件名
+  #   container_name: "frontend1"
+  #   restart: always
+  #   ports:
+  #     - "3000:8080"
+  # backend:
+  #   build:
+  #     context: ./backend  # 前端应用的路径
+  #     dockerfile: Dockerfile        # Dockerfile的文件名
+  #   container_name: "backend1"
+  #   restart: always
+  #   ports:
+  #     - "4000:4000"   
 
 volumes:
   mongo_data:
