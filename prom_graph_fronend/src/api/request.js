@@ -12,6 +12,7 @@ req.interceptors.request.use(
     if (config.url !== '/login') {
     // eslint-disable-next-line no-param-reassign
       config.headers.Authorization = `Bearer ${Cookies.get('token') ?? window.location.replace('/login')}`
+      console.log('tokN: ', Cookies.get('token'))
     }
     // eslint-disable-next-line no-param-reassign
     config.headers['Content-Type'] = 'application/json'
